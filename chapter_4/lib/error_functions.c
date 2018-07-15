@@ -1,0 +1,67 @@
+#include <stdarg.h>
+#include "error_functions.h"
+
+#include "tlpi_hdr.h"
+#include "ename.c.inc"
+
+#ifdef __GNUC__
+__atribute__ ((__noreturn__))
+#endif
+
+static void
+terminate(Boolean useExit3)
+{
+    char *s;
+    /*  Dump core if EF_DUMPCORE environment variable is defined and
+        is a nonempty string; otherwise call exit(3) or _exit(2),
+        depending on the value of 'useExit3'. */
+
+    s = getenv("EF_DUMPCORE");
+
+    if (s != NULL && *s != '\0')
+        abort();
+    else if (useExit3)
+        exit(EXIT_FAILURE);
+
+    else
+        _exit(EXIT_FAILURE);
+}
+
+static void
+outputError(Boolean useErr, int err, Boolean flushStdout, const char *format,
+            va_list ap)
+{
+#define BUF_SIZE 500
+    char buf[BUF_SIZE], userMsg[BUF_SIZE], errText[BUF_SIZE];
+    vsnprintf(userMsg, BUF_SIZE, format, ap);
+
+    if (useErr)
+        snprintf(errText, BUF_SIZE, " [%s %s]",
+                (err>0&&err<=MAX_ENAME)?ename[err]:"?UNKNOWN?",
+                strerror(err));
+    else
+        snprintf(errText, BUF_SIZE, ":");
+
+    snprintf(errText, BUF_SIZE, "ERROR%s %s\n", errText, userMsg);
+
+    if (flushStdout)
+        fflush (stdout);
+    fputs(buf, stderr);
+    fflush(stderr);
+}
+
+static void
+errMsg(const char *format, ...)
+{
+    va_list argList;
+
+    int savedErrno; /* Save the original errno value*/
+
+    va_start(argList, format);
+    outputError(TRUE, errno, TRUE, format, argList);
+    va_end(argList)
+
+
+}
+
+
