@@ -8,7 +8,7 @@ void errMsg(const char *format, ...); /* Print message on stderr */
 /*  This macro stops 'gcc -Wall' complaining that "control reaches
     end of non-void function" if we use the following functions to
     terminate main() or some other non-void function. */
-#define NORETURN __atribute__ ((__noreturn__))
+#define NORETURN __attribute__ ((__noreturn__))
 #else
 #define NORETURN
 #endif

@@ -59,9 +59,87 @@ errMsg(const char *format, ...)
 
     va_start(argList, format);
     outputError(TRUE, errno, TRUE, format, argList);
-    va_end(argList)
+    va_end(argList);
 
-
+    errno = savedErrno;
 }
 
+void
+errExit(const char* format, ...)
+{
+    va_list argList;
+
+    var_start(argList, format);
+    outputError(TRUE, errno, TRUE, format, argList);
+    va_end(argList);
+
+    terminate(TRUE);
+}
+
+// The difference (of this function) compares to errExit explained in chapter_25
+void err_exit(const char *format, ...)
+{
+
+    va_list argList;
+
+    va_start(argList, format);
+    outputError(TRUE, errno, FALSE, format, argList);
+    va_end(argList);
+
+    terminate(FALSE);
+}
+
+void
+errExitEN(int errnum, const char *format, ...)
+{
+    va_list argList;
+
+    va_start(argList, format);
+    outputError(TRUE, errnum, TRUE, format, argList);
+    va_end(argList);
+
+    terminate(TRUE);
+}
+
+void
+fatal( const char *format, ...)
+{
+    va_list argList;
+    va_start(argList, format);
+    outputError(FALSE, 0, TRUE, format, argList);
+    va_end(argList);
+
+    terminate(TRUE);
+}
+
+void
+usageErr(const char *format, ...)
+{
+    va_list argList;
+
+    fflush(stdout); /* Flush pending stdout */
+
+    fprintf(stderr, "Usage: ");
+    va_start(argList, format);
+    vfprintf(stderr, format, argList);
+    va_end(argList);
+
+    fflush(stderr); /* In case stderr is not line-buffered*/
+    exit(EXIT_FAILURE);
+}
+
+void
+cmdLineErr(const char *format)
+{
+    va_list argList;
+
+    fflush(stdout);
+    fprintf(stderr, "Command-line usage error: ");
+    va_start(argList, format);
+    vfprintf(stderr, format, argList);
+    va_end(argList);
+
+    fflush(stderr);
+    exit(EXIT_FAILURE);
+}
 

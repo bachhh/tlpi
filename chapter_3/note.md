@@ -15,6 +15,9 @@
     }
     ```
 
+    Subsequent call to va_arg() macro increment va_list to point to
+    next parameters
+
 
 
 
