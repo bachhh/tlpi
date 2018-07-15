@@ -1,3 +1,12 @@
+# ignore all
+*
+# not ignore files with extensions
+!*.*
+# not ignore Makefile
+!Makefile
+# not ignore directory
+!*/
+
 *.swp
 *.o
 *.a
