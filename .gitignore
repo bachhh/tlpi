@@ -1,2 +1,6 @@
 *.swp
+*.o
+*.a
 *.swo
+# tlpi folder is only for reference
+tlpi-dist
