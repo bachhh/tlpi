@@ -12,7 +12,7 @@ BASE_FLAGS = [
         '-g',
         '-D_DEFAULT_SOURCE',
         '-D_XOPEN_SOURCE=600',
-        '-Ilib/',
+        '-I/home/bach/tlpi/lib/',
         '-Wmissing-prototypes',
         '-Wno-sign-compare',
         '-pedantic',
@@ -31,6 +31,7 @@ SOURCE_EXTENSIONS = [
 SOURCE_DIRECTORIES = [
         'src',
         'lib'
+        '/home/bach/tlpi/lib'
         ]
 
 HEADER_EXTENSIONS = [
@@ -42,6 +43,7 @@ HEADER_EXTENSIONS = [
 
 HEADER_DIRECTORIES = [
         'include'
+        '/home/bach/tlpi/lib'
         ]
 
 BUILD_DIRECTORY = 'build';
